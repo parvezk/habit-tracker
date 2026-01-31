@@ -5,6 +5,8 @@ import { verifyToken, type JwtPayload } from '../utils/jwt.ts'
 export interface AuthenticatedRequest extends Request {
   user?: JwtPayload
   headers: IncomingHttpHeaders
+  params: { [key: string]: string }
+  body: Record<string, unknown>
 }
 
 export const authenticateToken = async (
