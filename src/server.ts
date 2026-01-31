@@ -12,7 +12,7 @@ import { APIError, errorHandler } from './middleware/errorHandler.ts'
 
 const app = express()
 //app.use(helmet())
-app.use((helmet as (options?: object) => RequestHandler)())
+app.use((helmet as unknown as (options?: object) => RequestHandler)())
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
