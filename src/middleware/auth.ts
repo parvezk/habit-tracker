@@ -1,8 +1,10 @@
 import type { Request, Response, NextFunction } from 'express'
+import type { IncomingHttpHeaders } from 'node:http'
 import { verifyToken, type JwtPayload } from '../utils/jwt.ts'
 
 export interface AuthenticatedRequest extends Request {
   user?: JwtPayload
+  headers: IncomingHttpHeaders
 }
 
 export const authenticateToken = async (
