@@ -7,16 +7,17 @@ import { comparePasswords, hashPassword } from '../utils/passwords.ts'
 import { eq } from 'drizzle-orm'
 
 export const register = async (
-  req: Request<any, any, NewUser>,
+  req: Request<Record<string, unknown>, unknown, NewUser>,
   res: Response
 ) => {
   try {
-    const hashedPassword = await hashPassword(req.body.password)
+    const body = req.body as NewUser
+    const hashedPassword = await hashPassword(body.password)
 
     const [user] = await db
       .insert(users)
       .values({
-        ...req.body,
+        ...body,
         password: hashedPassword,
       })
       .returning({
@@ -45,9 +46,11 @@ export const register = async (
   }
 }
 
+type LoginBody = { email: string; password: string }
+
 export const login = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body
+    const { email, password } = req.body as LoginBody
     const user = await db.query.users.findFirst({
       where: eq(users.email, email),
     })
